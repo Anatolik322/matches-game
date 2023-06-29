@@ -1,6 +1,7 @@
 import React from 'react'
-import AiSide from '../aiSide/AiSide'
-import UserSide from '../userSide/UserSide'
+import './main.scss'
+import party from './party.png'
+import cool from './cool.gif'
 import { useState } from 'react';
 
 function MainPart() {
@@ -9,64 +10,25 @@ function MainPart() {
     const [userMatches, setUserMatches] = useState(0);
     const [currentPlayer, setCurrentPlayer] = useState(true);
   
-    // const switchPlayer = () => {
-    //   setCurrentPlayer((prevPlayer) => (prevPlayer === "Player" ? "AI" : "Player"));
-    // };
-  
-    // const isGameOver = () => {
-    //   return totalMatches <= 0;
-    // };
-  
-    // const determineWinner = () => {
-    //   if (totalMatches % 2 === 0) {
-    //     setWinner(currentPlayer === "Player" ? "Player" : "AI");
-    //   } else {
-    //     setWinner(currentPlayer === "Player" ? "AI" : "Player");
-    //   }
-    // };
-  
-    // const handlePlayerTurn = (matches) => {
-    //   if (!isGameOver() && currentPlayer === "Player") {
-    //     if (matches >= 1 && matches <= 3 && matches <= totalMatches) {
-    //       setTotalMatches((prevTotalMatches) => prevTotalMatches - matches);
-    //       switchPlayer();
-    //     } else {
-    //       console.log("Invalid move! Try again.");
-    //     }
-    //   }
-    // };
-  
-    // const handleAITurn = () => {
-    //   if (!isGameOver() && currentPlayer === "AI") {
-    //     let matches = Math.min(totalMatches, 3);
-    //     matches = Math.max(1, matches);
-    //     setTotalMatches((prevTotalMatches) => prevTotalMatches - matches);
-    //     switchPlayer();
-    //   }
-    // };
-  
-    // const renderGameStatus = () => {
-    //   if (isGameOver()) {
-    //     return <div>Game over. {determineWinner()} wins!</div>;
-    //   } else {
-    //     return <div>Total matches: {totalMatches}</div>;
-    //   }
-    // };
-    ///////////////////////////////////////////////////////////
-    const AiResponse = <div>
+    let AiResponse = <div className='aiResponse'>
         <h2>Ai chose smt...</h2>
+        <img src={cool} alt="cool face" />
         <button onClick={() => aiTurn()}>continue</button>
     </div>
 
     const aiTurn = () => {
-        if(!currentPlayer){
-            if(aiMatches % 2 == 0){
+        if(!currentPlayer && totalMatches !== 0){
+            if(userMatches % 2 == 0 && totalMatches == 1){
+                setTotalMatches(matches => matches - 1);
+                setAiMatches(aiMatches => aiMatches + 1);
+            }
+            else if(aiMatches % 2 == 0 && totalMatches > 2){
                 setTotalMatches(matches => matches - 2);
                 setAiMatches(aiMatches => aiMatches + 2);
             }else if(totalMatches > 3){
                 setTotalMatches(matches => matches - 3);
                 setAiMatches(aiMatches => aiMatches + 3);
-            }else{
+            }else if(totalMatches == 1){
                 setTotalMatches(matches => matches - 1);
                 setAiMatches(aiMatches => aiMatches + 1);
             }  
@@ -77,37 +39,52 @@ function MainPart() {
     }
 
     const myTurn = (n) => {
-        if(currentPlayer && n >= 1 && n <= 3){
+        if(currentPlayer && n >= 1 && n <= 3 && n <= totalMatches){
             setTotalMatches(matches => matches - n);
             setUserMatches(userMatches => userMatches + n);
             setCurrentPlayer(false);
+            if(totalMatches == 0){
+                setCurrentPlayer(true);
+            }
             
         }else{
             console.log('try Again')
         }
     }
 
-    const gameOver = () => {
-        if(userMatches % 2 == 0){
-            return (<h1>YOU win</h1>)
-        }else{
-            return(<h1>AI win</h1>)
-        }
+    const reset = () => {
+        setTotalMatches(25);
+        setUserMatches(0);
+        setCurrentPlayer(true);
+        setAiMatches(0)
     }
 
+    const gameOver = () => {
+        return userMatches % 2 == 0 ? <><h1>YOU win</h1> <img src={party} alt="party" /></>:<><h1>AI win</h1> <img src={party} alt="party" /></>
+    }
+    if(totalMatches === 0){
+        AiResponse = 
+        <div className='aiResponse'>
+            {userMatches % 2 == 0 ? <><h1>YOU win</h1> <img src={party} alt="party" /></>:<><h1>AI win</h1> <img src={party} alt="party" /></>}
+        <button onClick={() => reset()}>Try Again</button>
+    </div> 
+    }
+    
     return (
-      <div>
-        {totalMatches}
-        <div>
-          <label>How many matches do you want to take?</label>
-      
-          <button onClick={() => myTurn(1)}>1</button>
-          <button onClick={() => myTurn(2)}>2</button>
-          <button onClick={() => myTurn(3)}>3</button>
+      <div className='main'>
+        <h1>Total matches: {totalMatches} </h1>
+        <div className='user_part'>
+          <span >How many matches do you want to take?</span><br/>
+            <div className="buttons">
+                <button className='user_number' onClick={() => myTurn(1)}>1</button>
+                <button className='user_number' onClick={() => myTurn(2)}>2</button>
+                <button className='user_number' onClick={() => myTurn(3)}>3</button>
+            </div>
+            <h2>My matches: {userMatches}</h2>
+            <h2>AI matches: {aiMatches}</h2>
         </div>
-        {}
-        <h2>my {userMatches}</h2>
-        <h2 onClick={() => aiTurn(1)}>AI {aiMatches}</h2>
+       
+        
         {!currentPlayer && AiResponse }
         {totalMatches == 0 && gameOver()}
       </div>
