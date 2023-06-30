@@ -2,7 +2,6 @@ import React from 'react'
 import Congrats from '../congrats/Congrats'
 import Header from '../header/Header'
 import './main.scss'
-import party from '../img/party.png'
 import cool from '../img/cool.gif'
 import box from '../img/box.png'
 import { useState } from 'react';
@@ -64,27 +63,6 @@ function MainPart({togle}) {
         setAiMatches(0)
     }
 
-    // const gameOver = () => {
-    //     return userMatches % 2 == 0 ?
-    //         <div className='winner'>
-    //             <h1>YOU win</h1>
-    //             <img src={party} alt="party" />
-    //             <button className='main_button' onClick={() => reset()}>Try Again</button>
-    //         </div> :
-    //         <div className='winner'>
-    //             <h1>AI win</h1> <img src={party} alt="party" />
-    //             <button className='main_button' onClick={() => reset()}>Try Again</button>
-    //         </div>
-    // }
-
-    // if (totalMatches === 0) {
-    //     AiResponse =
-    //         <div className='aiResponse'>
-    //             {userMatches % 2 == 0 ? <><h1>YOU win</h1> <img src={party} alt="party" /></> : <><h1>AI win</h1> <img src={party} alt="party" /></>}
-    //             <button className='main_button' onClick={() => reset()}>Try Again</button>
-    //         </div>
-    // }
-    
     return (
         totalMatches == 0 ? <Congrats reset = {reset} winner={userMatches % 2 == 0 ? true : false}/>:
         <>
@@ -105,9 +83,7 @@ function MainPart({togle}) {
                 {!togleAi && <h2>AI matches: {aiMatches}</h2>}
                 </div>
             
-                
                 {!currentPlayer && AiResponse }
-                {/* {totalMatches == 0 && gameOver()} */}
             </div>
         </>
     );

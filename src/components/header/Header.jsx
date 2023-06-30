@@ -11,7 +11,6 @@ function Header({setToggle, togle}) {
                 <label className="switch">
                     <input type="checkbox" onChange={() => {setToggle(!togle)}}/>
                     <span className="slider round"></span>
-                    
                 </label>
                 <span>AI info</span>
             </div>
