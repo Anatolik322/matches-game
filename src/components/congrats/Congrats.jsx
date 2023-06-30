@@ -1,7 +1,7 @@
 import React from 'react'
 import './congrats.scss'
 import party from '../img/party.png'
-function Congrats({winner}) {
+function Congrats({winner, reset}) {
 
     let winText = "Dear User you are looser, AI is smarter!"
 
@@ -22,7 +22,7 @@ function Congrats({winner}) {
                 </h2>
             </div>
             <div className="congrats_footer">
-                    <button>
+                    <button onClick={() => {reset()}}>
                         TRY AGAIN
                     </button>
             </div>

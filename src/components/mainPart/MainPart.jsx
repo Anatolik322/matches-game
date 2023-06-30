@@ -1,4 +1,6 @@
 import React from 'react'
+import Congrats from '../congrats/Congrats'
+import Header from '../header/Header'
 import './main.scss'
 import party from '../img/party.png'
 import cool from '../img/cool.gif'
@@ -11,7 +13,7 @@ function MainPart({togle}) {
     const [aiMatches, setAiMatches] = useState(0);
     const [userMatches, setUserMatches] = useState(0);
     const [currentPlayer, setCurrentPlayer] = useState(true);
-
+    const [togleAi, setTogleAi] = useState(false);
 
     let AiResponse = <div className='aiResponse'>
         <h2>Ai chose smt...</h2>
@@ -62,48 +64,52 @@ function MainPart({togle}) {
         setAiMatches(0)
     }
 
-    const gameOver = () => {
-        return userMatches % 2 == 0 ?
-            <div className='winner'>
-                <h1>YOU win</h1>
-                <img src={party} alt="party" />
-                <button className='main_button' onClick={() => reset()}>Try Again</button>
-            </div> :
-            <div className='winner'>
-                <h1>AI win</h1> <img src={party} alt="party" />
-                <button className='main_button' onClick={() => reset()}>Try Again</button>
-            </div>
-    }
+    // const gameOver = () => {
+    //     return userMatches % 2 == 0 ?
+    //         <div className='winner'>
+    //             <h1>YOU win</h1>
+    //             <img src={party} alt="party" />
+    //             <button className='main_button' onClick={() => reset()}>Try Again</button>
+    //         </div> :
+    //         <div className='winner'>
+    //             <h1>AI win</h1> <img src={party} alt="party" />
+    //             <button className='main_button' onClick={() => reset()}>Try Again</button>
+    //         </div>
+    // }
 
-    if (totalMatches === 0) {
-        AiResponse =
-            <div className='aiResponse'>
-                {userMatches % 2 == 0 ? <><h1>YOU win</h1> <img src={party} alt="party" /></> : <><h1>AI win</h1> <img src={party} alt="party" /></>}
-                <button className='main_button' onClick={() => reset()}>Try Again</button>
-            </div>
-    }
+    // if (totalMatches === 0) {
+    //     AiResponse =
+    //         <div className='aiResponse'>
+    //             {userMatches % 2 == 0 ? <><h1>YOU win</h1> <img src={party} alt="party" /></> : <><h1>AI win</h1> <img src={party} alt="party" /></>}
+    //             <button className='main_button' onClick={() => reset()}>Try Again</button>
+    //         </div>
+    // }
     
     return (
-      <div className='main'>
-        <div className='matches_box'>
-            <img src={box} alt="box" />
-            <h1>Total matches: {totalMatches} </h1>
-        </div>
-        <div className='user_part'>
-          <span >How many matches do you want to take?</span><br/>
-            <div className="buttons">
-                <button className='user_number' onClick={() => myTurn(1)}>1</button>
-                <button className='user_number' onClick={() => myTurn(2)}>2</button>
-                <button className='user_number' onClick={() => myTurn(3)}>3</button>
+        totalMatches == 0 ? <Congrats reset = {reset} winner={userMatches % 2 == 0 ? true : false}/>:
+        <>
+            <Header togle = {togleAi} setToggle = {setTogleAi}/>
+            <div className='main'>
+                <div className='matches_box'>
+                    <img src={box} alt="box" />
+                    <h1>Total matches: {totalMatches} </h1>
+                </div>
+                <div className='user_part'>
+                <span >How many matches do you want to take?</span><br/>
+                    <div className="buttons">
+                        <button className='user_number' onClick={() => myTurn(1)}>1</button>
+                        <button className='user_number' onClick={() => myTurn(2)}>2</button>
+                        <button className='user_number' onClick={() => myTurn(3)}>3</button>
+                    </div>
+                    <h2>My matches: {userMatches}</h2>
+                {!togleAi && <h2>AI matches: {aiMatches}</h2>}
+                </div>
+            
+                
+                {!currentPlayer && AiResponse }
+                {/* {totalMatches == 0 && gameOver()} */}
             </div>
-            <h2>My matches: {userMatches}</h2>
-           {togle && <h2>AI matches: {aiMatches}</h2>}
-        </div>
-       
-        
-        {!currentPlayer && AiResponse }
-        {totalMatches == 0 && gameOver()}
-      </div>
+        </>
     );
 }
 

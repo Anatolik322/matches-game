@@ -2,7 +2,7 @@ import React from 'react'
 import './header.scss'
 
 function Header({setToggle, togle}) {
-
+   
   return (
     <header className='header'>
         <div className='inner'>
